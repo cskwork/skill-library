@@ -1,0 +1,101 @@
+{
+  "template": true,
+  "name": "material_get",
+  "intent": "Read a permitted material by its stable identifier.",
+  "doNotUseFor": "Creating, changing, or deleting materials; cross-tenant access.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "materialId": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      }
+    },
+    "required": [
+      "materialId"
+    ],
+    "additionalProperties": false
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "ok": {
+        "type": "boolean",
+        "const": true
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 512
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "ok",
+      "data"
+    ],
+    "additionalProperties": false
+  },
+  "mapping": {
+    "kind": "example-only",
+    "service": "materials.getAuthorized",
+    "httpAlternative": {
+      "method": "GET",
+      "path": "/v1/materials/{materialId}"
+    }
+  },
+  "authorization": {
+    "requiredScopes": [
+      "materials:read"
+    ],
+    "tenantSource": "validated principal",
+    "ownership": "service-enforced accessible material"
+  },
+  "annotations": {
+    "readOnlyHint": true,
+    "destructiveHint": false,
+    "idempotentHint": true,
+    "openWorldHint": false
+  },
+  "limits": {
+    "timeoutMs": 8000,
+    "maxResultBytes": 32768
+  },
+  "writePolicy": {
+    "approvalRequired": false,
+    "idempotency": "read-only"
+  },
+  "tests": [
+    "authorized fixture",
+    "missing scope",
+    "wrong tenant",
+    "missing object",
+    "invalid input",
+    "upstream timeout"
+  ],
+  "errorPolicy": {
+    "successSchema": "outputSchema describes successful structured output.",
+    "domainFailure": "Return isError true and safe application error data/text; never an empty success.",
+    "safeFields": [
+      "code",
+      "message",
+      "retryable",
+      "correlationId"
+    ]
+  },
+  "annotationRationale": "openWorldHint false assumes this example queries only a closed, internal material store. Change it when the actual operation interacts with an open external world."
+}

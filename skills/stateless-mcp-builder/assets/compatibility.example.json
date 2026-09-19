@@ -1,0 +1,40 @@
+{
+  "format": "project-mcp-compatibility/v1",
+  "baselineCheckedOn": "2026-09-19",
+  "protocol": "2026-07-28",
+  "sdkVersion": null,
+  "targets": [
+    {
+      "harness": "Claude Code",
+      "version": null,
+      "attachment": "native HTTP",
+      "status": "NOT RUN",
+      "wireRevision": null,
+      "evidence": null
+    },
+    {
+      "harness": "Codex",
+      "version": null,
+      "attachment": "native HTTP",
+      "status": "NOT RUN",
+      "wireRevision": null,
+      "evidence": null
+    },
+    {
+      "harness": "Pi",
+      "version": null,
+      "attachment": "CLI-backed skill",
+      "status": "NOT RUN",
+      "wireRevision": null,
+      "evidence": null
+    },
+    {
+      "harness": "legacy SDK client",
+      "version": null,
+      "attachment": "sessionless legacy HTTP",
+      "status": "NOT RUN",
+      "wireRevision": null,
+      "evidence": null
+    }
+  ]
+}

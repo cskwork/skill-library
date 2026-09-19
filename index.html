@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>skill-library — production-grade skills for coding agents</title>
+<meta name="description" content="A public library of Agent Skills for Claude Code, Codex CLI, and Pi. Copy in, verify, ship. Zero runtime dependencies.">
+<meta property="og:title" content="skill-library">
+<meta property="og:description" content="Production-grade Agent Skills for Claude Code, Codex CLI, and Pi.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cskwork.github.io/skill-library/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c0b09'/%3E%3Ctext x='16' y='22.5' font-family='monospace' font-size='16' fill='%23e8a33d' text-anchor='middle'%3E%7B%7D%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#0c0b09; --bg2:#12100c; --panel:#161310; --line:#292319; --line2:#3a3122;
+    --ink:#ece5d8; --muted:#9d9483; --faint:#6b6455;
+    --amber:#e8a33d; --amber-hi:#f5c069; --amber-dim:rgba(232,163,61,.13);
+    --ok:#8fbf6f; --sans:-apple-system,"Segoe UI",Roboto,Inter,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
+    --max:1080px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(900px 480px at 70% -10%, rgba(232,163,61,.07), transparent 60%),
+      radial-gradient(600px 400px at 8% 12%, rgba(232,163,61,.035), transparent 65%);
+  }
+  ::selection{background:rgba(232,163,61,.35)}
+  a{color:var(--amber-hi);text-decoration:none}
+  a:hover{text-decoration:underline;text-underline-offset:3px}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+  code,.mono{font-family:var(--mono)}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:10;background:rgba(12,11,9,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .brand{font-family:var(--mono);font-weight:600;font-size:15px;color:var(--ink);display:flex;align-items:center;gap:10px}
+  .brand:hover{text-decoration:none}
+  .brand .glyph{width:26px;height:26px;border:1px solid var(--line2);border-radius:7px;display:grid;place-items:center;color:var(--amber);font-size:12px;background:var(--bg2)}
+  nav .links{display:flex;gap:26px;font-size:14px}
+  nav .links a{color:var(--muted)}
+  nav .links a:hover{color:var(--ink);text-decoration:none}
+  nav .links a.gh{display:flex;align-items:center;gap:7px;color:var(--ink)}
+
+  /* hero */
+  .hero{padding:96px 0 72px;position:relative}
+  .eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);display:flex;align-items:center;gap:12px;margin-bottom:22px}
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--amber)}
+  h1{font-size:clamp(38px,6.2vw,66px);line-height:1.04;letter-spacing:-.025em;font-weight:700;max-width:15ch}
+  h1 em{font-style:normal;color:var(--amber-hi)}
+  .sub{margin-top:26px;max-width:56ch;color:var(--muted);font-size:18px}
+  .sub strong{color:var(--ink);font-weight:600}
+  .hero-cta{margin-top:40px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:13px 22px;border-radius:9px;font-size:15px;font-weight:600;border:1px solid var(--line2);color:var(--ink)}
+  .btn:hover{text-decoration:none}
+  .btn.primary{background:var(--amber);border-color:var(--amber);color:#1a1204}
+  .btn.primary:hover{background:var(--amber-hi);border-color:var(--amber-hi)}
+  .btn.ghost:hover{border-color:var(--amber);color:var(--amber-hi)}
+  .stats{margin-top:56px;display:flex;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;max-width:720px;background:rgba(18,16,12,.5)}
+  .stat{flex:1;padding:16px 20px;border-left:1px solid var(--line)}
+  .stat:first-child{border-left:none}
+  .stat b{display:block;font-family:var(--mono);font-size:19px;color:var(--amber-hi);font-weight:600}
+  .stat span{font-size:12.5px;color:var(--faint);letter-spacing:.04em;text-transform:uppercase}
+
+  /* sections */
+  section{padding:64px 0}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}
+  .sec-head h2{font-size:26px;letter-spacing:-.01em}
+  .sec-head .n{font-family:var(--mono);color:var(--amber);font-size:14px}
+
+  /* skill card */
+  .card{border:1px solid var(--line2);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--bg2));overflow:hidden}
+  .card-top{padding:26px 28px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+  .card-name{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--ink)}
+  .card-name .path{color:var(--faint);font-weight:400;font-size:14px;margin-left:10px}
+  .pills{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{font-family:var(--mono);font-size:11.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--line2);color:var(--muted)}
+  .pill.v{color:var(--amber-hi);border-color:rgba(232,163,61,.45);background:var(--amber-dim)}
+  .pill.ok{color:var(--ok);border-color:rgba(143,191,111,.35)}
+  .card-body{padding:26px 28px;display:grid;grid-template-columns:1.15fr .85fr;gap:36px}
+  .card-desc{color:var(--muted);font-size:15.5px}
+  .card-desc b{color:var(--ink);font-weight:600}
+  .feats{list-style:none;display:grid;gap:11px}
+  .feats li{font-size:14px;color:var(--muted);display:flex;gap:11px;align-items:baseline}
+  .feats li::before{content:"›";color:var(--amber);font-family:var(--mono);flex-shrink:0}
+  .feats code{color:var(--ink);font-size:12.5px;background:var(--amber-dim);padding:1px 6px;border-radius:5px}
+  .card-foot{padding:18px 28px;border-top:1px solid var(--line);display:flex;gap:26px;font-size:14px}
+  .card-foot a{color:var(--muted)}
+  .card-foot a:hover{color:var(--amber-hi)}
+
+  /* install */
+  .install{border:1px solid var(--line);border-radius:14px;background:var(--bg2);overflow:hidden}
+  .tabs{display:flex;border-bottom:1px solid var(--line);background:rgba(12,11,9,.6)}
+  .tab{flex:1}
+  .tab input{position:absolute;opacity:0;pointer-events:none}
+  .tab label{display:block;text-align:center;padding:14px 8px;font-family:var(--mono);font-size:13.5px;color:var(--muted);cursor:pointer;border-right:1px solid var(--line);user-select:none}
+  .tab:last-child label{border-right:none}
+  .tab label:hover{color:var(--ink)}
+  #t1:focus-visible ~ .tabs .tab:nth-child(1) label,
+  #t2:focus-visible ~ .tabs .tab:nth-child(2) label,
+  #t3:focus-visible ~ .tabs .tab:nth-child(3) label{outline:2px solid var(--amber);outline-offset:-3px}
+  .panel{display:none;padding:24px 26px}
+  .panel pre{background:#0a0906;border:1px solid var(--line);border-radius:10px;padding:18px 20px;overflow-x:auto;font-size:13.5px;line-height:1.75}
+  .panel .c{color:var(--faint)}
+  .panel .p{color:var(--amber-hi)}
+  #t1:checked ~ .tabs .tab:nth-child(1) label,
+  #t2:checked ~ .tabs .tab:nth-child(2) label,
+  #t3:checked ~ .tabs .tab:nth-child(3) label{color:var(--amber-hi);background:var(--bg2);box-shadow:inset 0 -2px 0 var(--amber)}
+  #t1:checked ~ .panels .panel:nth-child(1),
+  #t2:checked ~ .panels .panel:nth-child(2),
+  #t3:checked ~ .panels .panel:nth-child(3){display:block}
+  .install-note{padding:14px 26px;border-top:1px solid var(--line);font-size:13px;color:var(--faint)}
+  .install-note code{color:var(--muted)}
+
+  /* principles */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .cell{border:1px solid var(--line);border-radius:12px;padding:24px;background:var(--bg2)}
+  .cell h3{font-size:15.5px;margin-bottom:9px;display:flex;gap:10px;align-items:center}
+  .cell h3 .k{font-family:var(--mono);color:var(--amber);font-size:13px}
+  .cell p{font-size:14px;color:var(--muted)}
+
+  footer{border-top:1px solid var(--line);padding:34px 0;margin-top:24px}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13.5px;color:var(--faint)}
+  footer .mono{font-size:12.5px}
+
+  @media (max-width:840px){
+    .card-body{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .stats{flex-wrap:wrap}
+    .stat{min-width:45%}
+    .hero{padding:64px 0 48px}
+    nav .links a:not(.gh){display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><span class="glyph">{ }</span>skill-library</a>
+    <div class="links">
+      <a href="#catalog">Skills</a>
+      <a href="#install">Install</a>
+      <a href="#principles">Principles</a>
+      <a class="gh" href="https://github.com/cskwork/skill-library" aria-label="GitHub repository">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Agent Skills · Public Library</div>
+    <h1>Production-grade skills for <em>coding agents</em>.</h1>
+    <p class="sub">A small, curated library of Agent Skills for <strong>Claude Code</strong>, <strong>Codex CLI</strong>, and <strong>Pi</strong>. Each skill is a self-contained directory — copy it in, read the manual, verify the checks. No frameworks, no runtime dependencies, no telemetry.</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#install">Install a skill</a>
+      <a class="btn ghost" href="#catalog">Browse the catalog</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>1</b><span>skill</span></div>
+      <div class="stat"><b>0</b><span>runtime deps</span></div>
+      <div class="stat"><b>Node ≥ 22</b><span>tooling only</span></div>
+      <div class="stat"><b>MIT</b><span>license</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="catalog">
+  <div class="wrap">
+    <div class="sec-head"><span class="n">01</span><h2>The catalog</h2></div>
+    <article class="card">
+      <div class="card-top">
+        <div class="card-name">stateless-mcp-builder<span class="path">skills/stateless-mcp-builder/</span></div>
+        <div class="pills">
+          <span class="pill v">v1.0.0</span>
+          <span class="pill ok">34/34 tests passing</span>
+          <span class="pill">MIT</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Build, migrate, or audit a <b>stateless MCP server</b> that exposes a web application's approved APIs as typed tools. The skill walks your agent through the whole arc — <b>protocol facts, architecture, tool contracts, trust boundaries, transport, setup manuals, and evidence-backed verification</b> — so the integration ships with proof instead of claims.</p>
+        <ul class="feats">
+          <li>MCP <code>2026-07-28</code> baseline, research verified <code>2026-09-19</code></li>
+          <li>Zero-dependency doctor: <code>mcp-check.mjs</code></li>
+          <li>Human + agent setup manuals, compatibility manifests</li>
+          <li>Tool-contract templates with scopes and idempotency</li>
+          <li>OAuth resource-server guidance for shared deployments</li>
+          <li>Claude Code, Codex CLI, and Pi attachment recipes</li>
+        </ul>
+      </div>
+      <div class="card-foot">
+        <a href="https://github.com/cskwork/skill-library/tree/main/skills/stateless-mcp-builder">SKILL.md</a>
+        <a href="https://github.com/cskwork/skill-library/blob/main/skills/stateless-mcp-builder/README.md">Package readme</a>
+        <a href="https://github.com/cskwork/skill-library/blob/main/skills/stateless-mcp-builder/VALIDATION.md">Validation record</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <div class="sec-head"><span class="n">02</span><h2>Install</h2></div>
+    <div class="install">
+      <input type="radio" name="tab" id="t1" checked>
+      <input type="radio" name="tab" id="t2">
+      <input type="radio" name="tab" id="t3">
+      <div class="tabs">
+        <div class="tab"><label for="t1">Claude Code</label></div>
+        <div class="tab"><label for="t2">Codex CLI</label></div>
+        <div class="tab"><label for="t3">Pi</label></div>
+      </div>
+      <div class="panels">
+        <div class="panel">
+<pre><span class="c"># clone the library once</span>
+git clone https://github.com/cskwork/skill-library.git
+
+<span class="c"># install into your app project</span>
+node skill-library/skills/stateless-mcp-builder/scripts/install-skill.mjs \
+  <span class="p">--target claude --project /path/to/your-app</span>
+
+<span class="c"># lands in .claude/skills/stateless-mcp-builder/</span></pre>
+        </div>
+        <div class="panel">
+<pre><span class="c"># clone the library once</span>
+git clone https://github.com/cskwork/skill-library.git
+
+<span class="c"># install into your app project</span>
+node skill-library/skills/stateless-mcp-builder/scripts/install-skill.mjs \
+  <span class="p">--target codex --project /path/to/your-app</span>
+
+<span class="c"># lands in .agents/skills/stateless-mcp-builder/</span></pre>
+        </div>
+        <div class="panel">
+<pre><span class="c"># clone the library once</span>
+git clone https://github.com/cskwork/skill-library.git
+
+<span class="c"># install into your app project</span>
+node skill-library/skills/stateless-mcp-builder/scripts/install-skill.mjs \
+  <span class="p">--target pi --project /path/to/your-app</span>
+
+<span class="c"># lands in .pi/skills/stateless-mcp-builder/</span></pre>
+        </div>
+      </div>
+      <p class="install-note">The installer copies files only. It refuses overwrite, installs no packages, edits no MCP configuration, and connects no server. Skill installation, server implementation, and harness attachment stay separate steps. Or copy <code>skills/&lt;name&gt;/</code> into your harness's skills folder by hand.</p>
+    </div>
+  </div>
+</section>
+
+<section id="principles">
+  <div class="wrap">
+    <div class="sec-head"><span class="n">03</span><h2>Why this library</h2></div>
+    <div class="grid">
+      <div class="cell">
+        <h3><span class="k">evidence</span> Proof, not claims</h3>
+        <p>Every skill ends at a completion gate: run the checks, record PASS/FAIL/SKIP, mark unrun things NOT RUN. No fabricated versions, endpoints, or benchmarks.</p>
+      </div>
+      <div class="cell">
+        <h3><span class="k">dated</span> Facts with timestamps</h3>
+        <p>Protocol and dependency knowledge is a dated research baseline with a source register — never timeless truth. Revalidate at implementation time.</p>
+      </div>
+      <div class="cell">
+        <h3><span class="k">0-dep</span> Self-contained packages</h3>
+        <p>Markdown, scripts, and templates you can read in an afternoon. Node for tooling, no npm dependencies, no build step, nothing phoning home.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 · MIT license · skills instruct agents, they never auto-attach servers</span>
+    <span class="mono">github.com/cskwork/skill-library</span>
+  </div>
+</footer>
+
+</body>
+</html>

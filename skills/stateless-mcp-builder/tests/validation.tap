@@ -1,0 +1,214 @@
+TAP version 13
+# Subtest: help works without a configured endpoint or token
+ok 1 - help works without a configured endpoint or token
+  ---
+  duration_ms: 1.516728
+  type: 'test'
+  ...
+# Subtest: usage fails closed on missing token and missing call allowlist
+ok 2 - usage fails closed on missing token and missing call allowlist
+  ---
+  duration_ms: 0.63345
+  type: 'test'
+  ...
+# Subtest: URL restrictions, malformed credentials, option bounds, and TLS bypass are enforced
+ok 3 - URL restrictions, malformed credentials, option bounds, and TLS bypass are enforced
+  ---
+  duration_ms: 0.772372
+  type: 'test'
+  ...
+# Subtest: arguments file must be bounded JSON object, not array, malformed JSON, or directory
+ok 4 - arguments file must be bounded JSON object, not array, malformed JSON, or directory
+  ---
+  duration_ms: 17.658807
+  type: 'test'
+  ...
+# Subtest: doctor verifies liveness, readiness, discovery, catalog, safe call and negative auth
+ok 5 - doctor verifies liveness, readiness, discovery, catalog, safe call and negative auth
+  ---
+  duration_ms: 48.175147
+  type: 'test'
+  ...
+# Subtest: doctor supports same-origin health prefixes and reports omitted auth test as SKIP
+ok 6 - doctor supports same-origin health prefixes and reports omitted auth test as SKIP
+  ---
+  duration_ms: 19.685525
+  type: 'test'
+  ...
+# Subtest: JSON/SSE success including comment notifications, multiline events, and Unicode
+ok 7 - JSON/SSE success including comment notifications, multiline events, and Unicode
+  ---
+  duration_ms: 11.336009
+  type: 'test'
+  ...
+# Subtest: tool listing collects bounded pages and does not call any tool
+ok 8 - tool listing collects bounded pages and does not call any tool
+  ---
+  duration_ms: 12.026499
+  type: 'test'
+  ...
+# Subtest: anonymous mode must be explicit and supports a public fixture
+ok 9 - anonymous mode must be explicit and supports a public fixture
+  ---
+  duration_ms: 5.946438
+  type: 'test'
+  ...
+# Subtest: 401 failure is sanitized and never triggers automatic downgrade
+ok 10 - 401 failure is sanitized and never triggers automatic downgrade
+  ---
+  duration_ms: 4.175968
+  type: 'test'
+  ...
+# Subtest: public discovery fails --require-auth and a bare 401 fails challenge verification
+ok 11 - public discovery fails --require-auth and a bare 401 fails challenge verification
+  ---
+  duration_ms: 18.239357
+  type: 'test'
+  ...
+# Subtest: 403 does not count as proof of authentication challenge
+ok 12 - 403 does not count as proof of authentication challenge
+  ---
+  duration_ms: 11.471203
+  type: 'test'
+  ...
+# Subtest: an expected server identity mismatch prevents tool calls
+ok 13 - an expected server identity mismatch prevents tool calls
+  ---
+  duration_ms: 3.436485
+  type: 'test'
+  ...
+# Subtest: missing recommended server identity is a warning, not invented identity
+ok 14 - missing recommended server identity is a warning, not invented identity
+  ---
+  duration_ms: 3.215773
+  type: 'test'
+  ...
+# Subtest: wrong response id, missing resultType, and missing cache metadata fail
+ok 15 - wrong response id, missing resultType, and missing cache metadata fail
+  ---
+  duration_ms: 10.49166
+  type: 'test'
+  ...
+# Subtest: session headers on a modern result are rejected
+ok 16 - session headers on a modern result are rejected
+  ---
+  duration_ms: 2.666286
+  type: 'test'
+  ...
+# Subtest: unsupported protocol JSON-RPC errors are recognized even with HTTP 400
+ok 17 - unsupported protocol JSON-RPC errors are recognized even with HTTP 400
+  ---
+  duration_ms: 4.441143
+  type: 'test'
+  ...
+# Subtest: HTTP-200 JSON-RPC errors and HTML responses are not successful discoveries
+ok 18 - HTTP-200 JSON-RPC errors and HTML responses are not successful discoveries
+  ---
+  duration_ms: 4.689139
+  type: 'test'
+  ...
+# Subtest: redirects are not followed and credentials are never sent to their destination
+ok 19 - redirects are not followed and credentials are never sent to their destination
+  ---
+  duration_ms: 2.571451
+  type: 'test'
+  ...
+# Subtest: response size cap and wall-clock timeout are enforced
+ok 20 - response size cap and wall-clock timeout are enforced
+  ---
+  duration_ms: 104.931681
+  type: 'test'
+  ...
+# Subtest: page limit, cursor cycle, and duplicate names are explicit failures
+ok 21 - page limit, cursor cycle, and duplicate names are explicit failures
+  ---
+  duration_ms: 14.375091
+  type: 'test'
+  ...
+# Subtest: HTTP 200 with tool isError or unhealthy structured output fails
+ok 22 - HTTP 200 with tool isError or unhealthy structured output fails
+  ---
+  duration_ms: 22.224963
+  type: 'test'
+  ...
+# Subtest: input_required is INCOMPLETE with exit 2, never successful health
+ok 23 - input_required is INCOMPLETE with exit 2, never successful health
+  ---
+  duration_ms: 16.262684
+  type: 'test'
+  ...
+# Subtest: unavailable allowlisted tool is not guessed or replaced
+ok 24 - unavailable allowlisted tool is not guessed or replaced
+  ---
+  duration_ms: 4.271857
+  type: 'test'
+  ...
+# Subtest: incomplete SSE event is rejected instead of accepting partial JSON
+ok 25 - incomplete SSE event is rejected instead of accepting partial JSON
+  ---
+  duration_ms: 2.593157
+  type: 'test'
+  ...
+# Subtest: 503 readiness remains failure even when MCP tool round trip succeeds
+ok 26 - 503 readiness remains failure even when MCP tool round trip succeeds
+  ---
+  duration_ms: 9.830772
+  type: 'test'
+  ...
+# Subtest: header encoding handles Unicode, surrounding whitespace and literal sentinel
+ok 27 - header encoding handles Unicode, surrounding whitespace and literal sentinel
+  ---
+  duration_ms: 0.344769
+  type: 'test'
+  ...
+# Subtest: nested simple header annotations work; duplicates, arrays, compositions, numbers do not
+ok 28 - nested simple header annotations work; duplicates, arrays, compositions, numbers do not
+  ---
+  duration_ms: 0.776578
+  type: 'test'
+  ...
+# Subtest: malformed annotated tools are excluded and cannot be called
+ok 29 - malformed annotated tools are excluded and cannot be called
+  ---
+  duration_ms: 8.772268
+  type: 'test'
+  ...
+# Subtest: Unicode annotated argument is actually transmitted as the encoded routing header
+ok 30 - Unicode annotated argument is actually transmitted as the encoded routing header
+  ---
+  duration_ms: 9.760432
+  type: 'test'
+  ...
+# Subtest: installer copies to each correct project directory and refuses overwrite
+ok 31 - installer copies to each correct project directory and refuses overwrite
+  ---
+  duration_ms: 55.910634
+  type: 'test'
+  ...
+# Subtest: installer refuses symlinked ancestors and does not overwrite unrelated config
+ok 32 - installer refuses symlinked ancestors and does not overwrite unrelated config
+  ---
+  duration_ms: 1.881996
+  type: 'test'
+  ...
+# Subtest: real CLI process emits JSON with the correct success and usage exit codes
+ok 33 - real CLI process emits JSON with the correct success and usage exit codes
+  ---
+  duration_ms: 194.713309
+  type: 'test'
+  ...
+# Subtest: a named pipe is rejected without waiting for a writer (POSIX)
+ok 34 - a named pipe is rejected without waiting for a writer (POSIX)
+  ---
+  duration_ms: 5.564985
+  type: 'test'
+  ...
+1..34
+# tests 34
+# suites 0
+# pass 34
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 738.372517

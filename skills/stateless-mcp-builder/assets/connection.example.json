@@ -1,0 +1,20 @@
+{
+  "format": "project-mcp-connection-manifest/v1",
+  "not_a_universal_harness_config": true,
+  "name": "webapp-api",
+  "url": "https://api.example.com/mcp",
+  "transport": "streamable-http",
+  "protocolBaseline": "2026-07-28",
+  "legacyPosture": "stateless",
+  "auth": {
+    "mode": "bearer-example",
+    "tokenEnvironmentVariable": "APP_MCP_TOKEN"
+  },
+  "health": {
+    "livenessPath": "/healthz",
+    "readinessPath": "/readyz",
+    "safeTool": "system_health"
+  },
+  "sourceCheckedOn": "2026-09-19",
+  "realConnectionTested": false
+}
